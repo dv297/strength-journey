@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+  Button,
   SafeAreaView,
   Text,
   TextInput,
@@ -13,6 +14,7 @@ import type { inferProcedureOutput } from "@trpc/server";
 import type { AppRouter } from "@acme/api";
 
 import { trpc } from "../utils/trpc";
+import useAuthentication from "../hooks/useAuthentication";
 
 const PostCard: React.FC<{
   post: inferProcedureOutput<AppRouter["post"]["all"]>[number];
@@ -66,9 +68,11 @@ const CreatePost: React.FC = () => {
 export const HomeScreen = () => {
   const postQuery = trpc.post.all.useQuery();
   const [showPost, setShowPost] = React.useState<string | null>(null);
+  const { signout } = useAuthentication();
 
   return (
     <SafeAreaView>
+      <Button title="Logout" onPress={signout} />
       <View className="h-full w-full p-4">
         <Text className="text-5xl font-bold mx-auto pb-2">
           Create <Text className="text-indigo-500">T3</Text> Turbo
