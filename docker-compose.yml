@@ -1,0 +1,16 @@
+version: '3.8'
+
+# For development purposes only
+
+services:
+  postgres:
+    container_name: sj-postgres
+    image: postgres
+    restart: always
+    environment:
+      - DATABASE_HOST=127.0.0.1
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=strength-journey
+    ports:
+      - '5433:5432'
