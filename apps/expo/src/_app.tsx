@@ -33,15 +33,15 @@ const Stacks = () => {
 
 export const App = () => {
   return (
-    <TRPCProvider>
-      <AuthenticationProvider>
+    <AuthenticationProvider>
+      <TRPCProvider>
         <SafeAreaProvider>
           <NavigationContainer>
             <Stacks />
           </NavigationContainer>
           <StatusBar />
         </SafeAreaProvider>
-      </AuthenticationProvider>
-    </TRPCProvider>
+      </TRPCProvider>
+    </AuthenticationProvider>
   );
 };

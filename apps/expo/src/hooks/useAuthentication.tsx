@@ -19,7 +19,7 @@ const firebaseConfig = {
   measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig, "strength-journey-frontend");
 const auth = getAuth(app);
 
 interface AuthenticationContextInterface {

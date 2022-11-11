@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export const postRouter = router({
   all: publicProcedure.query(({ ctx }) => {
+    console.log(ctx.idToken);
     return ctx.prisma.post.findMany();
   }),
   byId: publicProcedure.input(z.string()).query(({ ctx, input }) => {

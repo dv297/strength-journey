@@ -8,6 +8,7 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
  */
 type CreateContextOptions = {
   session: Session | null;
+  idToken: string | undefined;
 };
 
 /** Use this helper for:
@@ -19,6 +20,7 @@ export const createContextInner = async (opts: CreateContextOptions) => {
   return {
     session: opts.session,
     prisma,
+    idToken: opts.idToken,
   };
 };
 
@@ -27,10 +29,16 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  * @link https://trpc.io/docs/context
  **/
 export const createContext = async (opts: CreateNextContextOptions) => {
+  console.log(opts.req.headers);
+  const idTokenHeader = opts.req.headers["id-token"];
+  const idToken = Array.isArray(idTokenHeader)
+    ? idTokenHeader[0]
+    : idTokenHeader;
   const session = await getServerSession(opts);
 
   return await createContextInner({
     session,
+    idToken,
   });
 };
 

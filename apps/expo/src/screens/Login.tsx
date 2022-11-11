@@ -1,10 +1,5 @@
-import {
-  Button,
-  KeyboardAvoidingView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { KeyboardAvoidingView, Text, TextInput, View } from "react-native";
+import { Button } from "react-native-ui-lib";
 import useAuthentication from "../hooks/useAuthentication";
 import { useState } from "react";
 
@@ -39,12 +34,13 @@ const Login = () => {
               onChangeText={setPassword}
             />
           </View>
-          <View className="mt-4 flex items-start">
+          <View className="mt-4 flex items-start w-full">
             <Button
-              title="Login"
+              label="Login"
               onPress={() => {
                 signin(email, password);
               }}
+              size={Button.sizes.large}
             />
           </View>
         </View>

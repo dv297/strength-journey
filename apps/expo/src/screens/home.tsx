@@ -66,41 +66,15 @@ const CreatePost: React.FC = () => {
 };
 
 export const HomeScreen = () => {
-  const postQuery = trpc.post.all.useQuery();
+  const postQuery = trpc.workout.all.useQuery();
   const [showPost, setShowPost] = React.useState<string | null>(null);
   const { signout } = useAuthentication();
 
   return (
     <SafeAreaView>
-      <Button title="Logout" onPress={signout} />
       <View className="h-full w-full p-4">
-        <Text className="text-5xl font-bold mx-auto pb-2">
-          Create <Text className="text-indigo-500">T3</Text> Turbo
-        </Text>
-
-        <View className="py-2">
-          {showPost ? (
-            <Text>
-              <Text className="font-semibold">Selected post:</Text>
-              {showPost}
-            </Text>
-          ) : (
-            <Text className="italic font-semibold">Press on a post</Text>
-          )}
-        </View>
-
-        <FlashList
-          data={postQuery.data}
-          estimatedItemSize={20}
-          ItemSeparatorComponent={() => <View className="h-2" />}
-          renderItem={(p) => (
-            <TouchableOpacity onPress={() => setShowPost(p.item.id)}>
-              <PostCard post={p.item} />
-            </TouchableOpacity>
-          )}
-        />
-
-        <CreatePost />
+        <Button title="Logout" onPress={signout} />
+        <Button title="Refetch" onPress={() => postQuery.refetch()} />
       </View>
     </SafeAreaView>
   );
