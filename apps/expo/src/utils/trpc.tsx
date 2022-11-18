@@ -1,5 +1,7 @@
 import { createTRPCReact } from "@trpc/react-query";
 import type { AppRouter } from "@acme/api";
+import { getIdToken } from "@firebase/auth";
+
 /**
  * A set of typesafe hooks for consuming your API.
  */
@@ -28,30 +30,32 @@ const getBaseUrl = () => {
  */
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink } from "@trpc/client";
+import { httpLink } from "@trpc/client";
 import { transformer } from "@acme/api/transformer";
-import useAuthentication from "../hooks/useAuthentication";
+
+let authIdToken: string;
+
+export const setAuthIdToken = (idToken: string) => {
+  authIdToken = idToken;
+};
 
 export const TRPCProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { user } = useAuthentication();
   const [queryClient] = React.useState(() => new QueryClient());
   const [trpcClient] = React.useState(() =>
     trpc.createClient({
       transformer,
       links: [
-        httpBatchLink({
+        httpLink({
           url: `${getBaseUrl()}/api/trpc`,
           async headers() {
-            if (!user) {
-              return {};
+            if (!authIdToken) {
+              throw new Error("Id token not available");
             }
 
-            const idToken = await user.getIdToken();
-
             return {
-              "id-token": idToken,
+              "id-token": authIdToken,
             };
           },
         }),

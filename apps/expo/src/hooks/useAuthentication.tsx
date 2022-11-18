@@ -7,7 +7,8 @@ import {
 } from "react";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { User } from "@firebase/auth";
+import { User, getIdToken } from "@firebase/auth";
+import { setAuthIdToken } from "../utils/trpc";
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -46,10 +47,11 @@ const AuthenticationProvider = (props: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    auth.onAuthStateChanged((authUser) => {
-      console.log(authUser);
+    auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
         setUser(authUser);
+        const idToken = await getIdToken(authUser);
+        setAuthIdToken(idToken);
       } else {
         setUser(null);
       }
